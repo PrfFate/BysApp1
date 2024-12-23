@@ -1,0 +1,194 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAU Giriş</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Genel Stil */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #2a2a2e, #121214);
+            color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #1c1c1f;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 200px;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .user-selection {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .selection-btn {
+            flex: 1;
+            padding: 12px;
+            background-color: #2e2e33;
+            border: 1px solid #444;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .selection-btn:hover {
+                background-color: #ff5e7b;
+                color: #fff;
+            }
+
+            .selection-btn.selected {
+                background-color: #ff5e7b;
+                color: #fff;
+                border-color: #ff5e7b;
+            }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background-color: #2e2e33;
+            font-size: 14px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+            .login-form input::placeholder {
+                color: #888;
+            }
+
+            .login-form input:focus {
+                border-color: #ff5e7b;
+            }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff5e7b;
+            border: none;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .submit-btn:hover {
+                background-color: #ff2a57;
+            }
+
+        .forgot-password {
+            margin-top: 15px;
+        }
+
+            .forgot-password a {
+                font-size: 14px;
+                color: #ff5e7b;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+                .forgot-password a:hover {
+                    color: #ff2a57;
+                }
+
+        .error-message {
+            color: #e63946;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://uploads.turbologo.com/uploads/design/hq_preview_image/472636/draw_svg20240905-1-1ulyzo2.svg.png" alt="IAU Logo" class="logo">
+        <h1>IAU</h1>
+
+        <!-- Kullanıcı Seçimi -->
+        <div class="user-selection">
+            <button class="selection-btn" id="student-btn" onclick="showForm('student-form', this)">Öğrenci</button>
+            <button class="selection-btn" id="staff-btn" onclick="showForm('staff-form', this)">Personel</button>
+        </div>
+
+        <!-- Giriş Formları -->
+        <div id="forms-container">
+            <!-- Öğrenci Giriş -->
+            <form id="student-form" class="login-form" method="post" asp-action="LoginUser" asp-controller="Account">
+                <input type="text" name="Username" placeholder="Kullanıcı Adı" required>
+                <input type="password" name="Password" placeholder="Şifre" required>
+                <input type="hidden" name="Role" value="Student">
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+            </form>
+
+            <!-- Personel Giriş -->
+            <form id="staff-form" class="login-form" method="post" asp-action="LoginUser" asp-controller="Account" style="display: none;">
+                <input type="text" name="Username" placeholder="Kullanıcı Adı" required>
+                <input type="password" name="Password" placeholder="Şifre" required>
+                <input type="hidden" name="Role" value="Advisor">
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+            </form>
+        </div>
+
+        <!-- Hata Mesajı -->
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <p class="error-message">@ViewBag.ErrorMessage</p>
+        }
+
+        <!-- Şifremi Unuttum -->
+        <div class="forgot-password">
+            <a href="@Url.Action("ForgotPassword", "Account")">Şifremi Unuttum?</a>
+        </div>
+    </div>
+
+    <script>
+        function showForm(formId, btn) {
+            // Formları gizle
+            document.getElementById('student-form').style.display = 'none';
+            document.getElementById('staff-form').style.display = 'none';
+            document.getElementById(formId).style.display = 'block';
+
+            // Seçili durumu güncelle
+            const buttons = document.querySelectorAll('.selection-btn');
+            buttons.forEach(button => button.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        // Varsayılan olarak öğrenci formunu göster
+        showForm('student-form', document.getElementById('student-btn'));
+    </script>
+</body>
+</html>

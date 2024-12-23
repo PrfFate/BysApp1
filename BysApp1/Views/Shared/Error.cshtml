@@ -1,0 +1,42 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Hata";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger text-center">
+                <h1 class="display-4"><strong>Hata</strong></h1>
+                <h3>Bir hata oluştu.</h3>
+                <p class="lead">İstek işlenirken bir sorun meydana geldi. Lütfen daha sonra tekrar deneyiniz.</p>
+
+                @if (Model.ShowRequestId)
+                {
+                    <p>
+                        <strong>İstek ID:</strong> <code>@Model.RequestId</code>
+                    </p>
+                }
+            </div>
+
+            <div class="alert alert-info">
+                <h4>Geliştirme Modu</h4>
+                <p>
+                    Geliştirme ortamına geçmek, karşılaşılan hata hakkında daha ayrıntılı bilgi sağlayacaktır.
+                </p>
+                <p>
+                    <strong>Geliştirme ortamı, yayımlanan uygulamalarda etkinleştirilmemelidir.</strong>
+                    Aksi takdirde, kullanıcıya hata raporları ve hassas bilgiler gösterilebilir.
+                </p>
+                <p>
+                    Yerel hata ayıklama için, <strong>Development</strong> ortamını etkinleştirmek üzere <strong>ASPNETCORE_ENVIRONMENT</strong> ortam değişkenini <strong>Development</strong> olarak ayarlayın ve uygulamayı yeniden başlatın.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Görsel içerik için, hatalı bir durumu simüle eden bir ikon -->
+<div class="text-center mt-4">
+    <img src="https://img.icons8.com/external-flat-juicy-fish/64/000000/external-error-user-interface-flat-flat-juicy-fish.png" alt="Error Icon">
+</div>
